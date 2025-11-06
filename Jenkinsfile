@@ -3,9 +3,7 @@ pipeline {
 
     parameters {
         choice(
-            name: 'BRANCH_VERSION',
-            choices: ['1.1', '1.2', '1.3', '2.0', '2.1'],
-            description: 'Select the branch version to build'
+            name: 'BRANCH_VERSION', choices: ['1.1', '1.2', '1.3', '2.0', '2.1'], description: 'Select the branch version to build'
         )
         booleanParam(
             name: 'RUN_TESTS',
@@ -22,14 +20,17 @@ pipeline {
             }
         }
         stage('Test') {
+            when {
+                expression { params.RUN_TESTS }
+            }
             steps {
-                echo 'Testing...'
+                echo "Testing branch ${params.BRANCH_VERSION}..."
                 // Add your test steps here
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying...'
+                echo "Deploying branch ${params.BRANCH_VERSION}..."
                 // Add your deploy steps here
             }
         }
