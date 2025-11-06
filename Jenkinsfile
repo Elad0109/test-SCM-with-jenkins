@@ -1,10 +1,14 @@
 pipeline {
     agent any
 
+    parameters {
+        string(name: 'BRANCH_VERSION')
+    }
+
     stages {
         stage('Build') {
             steps {
-                echo 'Building...'
+                echo "Building branch ${params.BRANCH_VERSION}..."
                 // Add your build steps here
             }
         }
