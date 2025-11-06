@@ -1,3 +1,5 @@
+def gv
+
 pipeline {
     agent any
 
@@ -13,9 +15,21 @@ pipeline {
     }
 
     stages {
+        
+        stage('Initialize') {
+            steps {
+                script {
+                    gv = load 'scripts.groovy'
+                }
+            }
+        }
+        
+        
         stage('Build') {
             steps {
-                echo "Building branch ${params.BRANCH_VERSION}..."
+                script {
+                    gv.buildapp()
+                }
                 // Add your build steps here
             }
         }
@@ -24,13 +38,17 @@ pipeline {
                 expression { params.RUN_TESTS }
             }
             steps {
-                echo "Testing branch ${params.BRANCH_VERSION}..."
+                script {
+                    gv.testapp()
+                }
                 // Add your test steps here
             }
         }
         stage('Deploy') {
             steps {
-                echo "Deploying branch ${params.BRANCH_VERSION}..."
+                script {
+                    gv.deployapp()
+                }
                 // Add your deploy steps here
             }
         }
